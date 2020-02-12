@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'gender_card.dart';
+import 'reusable_card.dart';
 
-const cellBackground = Color(0xFF1D1E33);
+const activeCardColour = Color(0xFF1D1E33);
+const inactiveCardColour = Color(0xFF111328);
 const bottomCellBackground = Color(0xFFEB1555);
+
+enum Gender { MALE, FEMALE }
 
 class InputPage extends StatefulWidget {
   InputPage({Key key, this.title}) : super(key: key);
@@ -12,8 +18,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
-
+  Gender selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +31,35 @@ class _InputPageState extends State<InputPage> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: ReusableContainer(
-                  colour: cellBackground,
+                child: ReusableCard(
+                  onPress: () {
+                    setState(() {
+                      selectedGender = Gender.MALE;
+                    });
+                  },
+                  colour: selectedGender == Gender.MALE
+                      ? activeCardColour
+                      : inactiveCardColour,
+                  cardChild: GenderCard(
+                    icon: FontAwesomeIcons.mars,
+                    text: 'MALE',
+                  ),
                 ),
               ),
               Expanded(
-                child: ReusableContainer(
-                  colour: cellBackground,
+                child: ReusableCard(
+                  onPress: () {
+                    setState(() {
+                      selectedGender = Gender.FEMALE;
+                    });
+                  },
+                  colour: selectedGender == Gender.FEMALE
+                      ? activeCardColour
+                      : inactiveCardColour,
+                  cardChild: GenderCard(
+                    icon: FontAwesomeIcons.venus,
+                    text: 'FEMALE',
+                  ),
                 ),
               ),
             ],
@@ -42,8 +69,8 @@ class _InputPageState extends State<InputPage> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: ReusableContainer(
-                  colour: cellBackground,
+                child: ReusableCard(
+                  colour: activeCardColour,
                 ),
               ),
             ],
@@ -53,13 +80,13 @@ class _InputPageState extends State<InputPage> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: ReusableContainer(
-                  colour: cellBackground,
+                child: ReusableCard(
+                  colour: activeCardColour,
                 ),
               ),
               Expanded(
-                child: ReusableContainer(
-                  colour: cellBackground,
+                child: ReusableCard(
+                  colour: activeCardColour,
                 ),
               ),
             ],
@@ -72,23 +99,6 @@ class _InputPageState extends State<InputPage> {
           color: bottomCellBackground,
         )
       ]),
-    );
-  }
-}
-
-class ReusableContainer extends StatelessWidget {
-  ReusableContainer({@required this.colour});
-
-  final Color colour;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        color: colour, //Color(0xFF1D1E33),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
     );
   }
 }
