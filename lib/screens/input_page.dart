@@ -1,8 +1,12 @@
+import 'package:bmi_calculator_flutter/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'gender_card.dart';
-import 'constants.dart';
-import 'reusable_card.dart';
+import '../components/bottom_button.dart';
+import '../components/gender_card.dart';
+import '../constants.dart';
+import '../components/reusable_card.dart';
+import '../components/round_icon_button.dart';
+import '../calculator_brain.dart';
 
 enum Gender { MALE, FEMALE }
 
@@ -208,35 +212,22 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              height: kBottomContainerHeight,
-              color: kBottomCellBackground,
+            BottomButton(
+              buttonTittle: 'CALCULATE',
+              onTap: () {
+                CalculatorBrain calc =
+                    CalculatorBrain(height: height, weight: weight);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                              bmi: calc.calculateBIM(),
+                              result: calc.getResult(),
+                              interprtation: calc.getInterpretation(),
+                            )));
+              },
             )
           ]),
-    );
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({@required this.icon, @required this.onPressed});
-
-  final IconData icon;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(icon),
-      onPressed: onPressed,
-      elevation: 6.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
     );
   }
 }
